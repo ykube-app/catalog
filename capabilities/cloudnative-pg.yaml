@@ -1,0 +1,23 @@
+apiVersion: kr8.ykube.app/v1alpha1
+  kind: CapabilityDefinition                                                                      
+  metadata:
+    name: cloudnative-pg                                                                          
+  spec:                                                                                        
+    type: database
+    provider: cloudnative-pg
+    versions:                                                                                     
+      - version: "0.28.0"
+        helm:                                                                                     
+          repo: "https://cloudnative-pg.github.io/charts"                                      
+          chart: "cloudnative-pg"                                                                 
+          values: {}
+        providerCRTemplate: |                                                                     
+          apiVersion: postgresql.cnpg.io/v1                                                       
+          kind: Cluster                                                                           
+          metadata:                                                                               
+            name: {{ .Name }}                                                                     
+            namespace: {{ .Namespace }}                                                        
+          spec:
+            instances: 1
+            storage:
+              size: 1Gi
