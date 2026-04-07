@@ -21,3 +21,6 @@ spec:
           instances: 1
           storage:
             size: 1Gi
+      ReadinessCheck:
+        fieldPath: .status.phase
+        expectedValue: "Cluster in healthy state"
