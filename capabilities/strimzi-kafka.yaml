@@ -1,7 +1,7 @@
 apiVersion: kr8.ykube.app/v1alpha1
 kind: CapabilityDefinition
 metadata:
-  name: kafka
+  name: strimzi-kafka
 spec:
   type: messaging
   provider: strimzi-kafka
