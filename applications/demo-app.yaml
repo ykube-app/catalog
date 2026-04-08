@@ -1,10 +1,31 @@
-apiVersion: kr8.ykube.app/v1alpha1
-kind: Application
-metadata:
-  name: demo-app
-  namespace: demo
-spec:
-  image: ghcr.io/ykube-app/demo-app:latest
-  database:
-    name: demo-app
-  ingress: /demo
+apiVersion: kr8.ykube.app/v1alpha1                                                              
+  kind: ApplicationDefinition                                                                     
+  metadata:                                                                                       
+    name: demo-app                                                                                
+  spec:                                                                                         
+    displayName: "Demo App"
+    description: "Web application with PostgreSQL database"
+    parameters:                                                                                   
+      - name: IMAGE
+        displayName: "Container Image"                                                            
+        type: enum                                                                              
+        required: true
+        allowedValues:                                                                            
+          - ghcr.io/ykube-app/demo-app:latest
+          - ghcr.io/ykube-app/demo-app:dev                                                        
+      - name: DATABASE_NAME                                                                       
+        displayName: "Database Name"
+        type: string                                                                              
+        required: false                                                                         
+        default: "demo-app"
+      - name: INGRESS
+        displayName: "Ingress Path"                                                               
+        type: string
+        required: true                                                                            
+        default: "/demo"                                                                        
+        pattern: "^/.*"
+    template: |                                                                                   
+      image: "{{ .IMAGE }}"
+      {{ if .DATABASE_NAME }}database:                                                            
+        name: "{{ .DATABASE_NAME }}"                                                              
+      {{ end }}ingress: "{{ .INGRESS }}"
